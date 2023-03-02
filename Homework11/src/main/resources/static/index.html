@@ -4,13 +4,43 @@
     <meta charset="UTF-8">
     <title>Shorten URL</title>
 </head>
+
 <body>
 <h1>Short your url</h1>
 <div>
-    <form action="short" method="GET">
+    <form action="short" method="POST" id="myForm">
         <input type="text" name="url" /> <br><br>
         <input type="submit" value="Short Url">
     </form>
 </div>
+<div id="show-url">
+</div>
 </body>
+<script>
+    const form = document.getElementById('myForm');
+    console.log(form);
+    form.addEventListener('submit', (event) => {
+        event.preventDefault(); // prevent the form from submitting
+        const formData = new FormData(event.target);
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/short');
+        //xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                console.log(response.url);
+                console.log(response.shortUrl);
+                // Обрабатываем ответ здесь
+                const div = document.getElementById('show-url');
+                div.innerHTML = `<hr>
+                                  <p>URL: ${response.url}</p>
+                                 <p>ShortUrl: <a href="/my/${response.shortUrl}">${response.shortUrl}</a></p>`
+            } else {
+                console.error('Ошибка: ', xhr.status);
+                // Обрабатываем ошибку здесь
+            }
+        };
+        xhr.send(formData);
+    });
+</script>
 </html>

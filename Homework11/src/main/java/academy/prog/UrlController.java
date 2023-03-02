@@ -32,7 +32,7 @@ public class UrlController {
     }
 
     // Задача 2
-    @GetMapping("short")
+    @PostMapping("short")
     public ResponseEntity<String> fromForm(@RequestParam String url, HttpServletRequest request) {
         StringBuffer requestURL = request.getRequestURL();
         String baseUrl = requestURL.substring(0, requestURL.length() - request.getRequestURI().length() + request.getContextPath().length());
